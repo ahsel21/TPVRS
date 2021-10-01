@@ -1,0 +1,24 @@
+#include <mpi.h>
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+
+int main(int argc, char** argv) {
+	int rank;
+	int buf;
+	const int root = 0;
+
+	MPI_Init(&argc, &argv);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	
+	if (rank == root) {
+		printf("Vvedite 4islo: ");
+		cin >> buf;
+	}
+	MPI_Bcast(&buf, 1, MPI_INT, root, MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);
+	printf("Process %d  got %d", rank, buf);
+
+	MPI_Finalize();
+	return 0;
+}
